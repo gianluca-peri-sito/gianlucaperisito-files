@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Interactive Graph & Adjacency Matrix</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg: #000;
+      --panel-bg: #111;
+      --text: #eee;
+      --muted: #aaa;
+      --accent: #2196f3;
+      --node-fill: #c62828; /* red */
+      --link: #2196f3;      /* blue */
+      --matrix-num: #4caf50;
+    }
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(180deg,#0b0b0b 0%,#000 100%);color:var(--text);}
+    .app { display:flex; gap:20px; padding:18px; align-items:flex-start; box-sizing:border-box; }
+    .panel { background:var(--panel-bg); border-radius:10px; padding:14px; box-shadow:0 6px 18px rgba(0,0,0,0.6); min-width:260px; max-width:360px; }
+    h1 { margin:0 0 8px 0; font-size:18px; color:var(--text); }
+    p.small { margin:6px 0 12px 0; color:var(--muted); font-size:13px; }
+    button, .btn { display:inline-flex; align-items:center; gap:8px; background:#222; color:var(--text); border:1px solid rgba(255,255,255,0.06); padding:8px 10px; border-radius:8px; cursor:pointer; font-size:13px; }
+    button:hover, .btn:hover { background:#2d2d2d; }
+    .btn-toggle.active { outline: 2px solid rgba(255,255,255,0.06); background:#1b2a44; border-color: rgba(33,150,243,0.25); }
+    .controls { display:flex; flex-direction:column; gap:10px; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    #matrixContainer { margin-top:8px; overflow:auto; max-height:300px; border-radius:8px; padding:6px; background:#050505; }
+    table#matrix { border-collapse:collapse; margin:0; }
+    #matrix td { border:1px solid rgba(255,255,255,0.04); padding:6px 8px; text-align:center; min-width:28px; font-family:monospace; color:var(--matrix-num); background: rgba(255,255,255,0.01); }
+    canvas#graphCanvas { background:var(--bg); border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.7); display:block; cursor:crosshair; border:1px solid rgba(255,255,255,0.03); }
+    .status { margin-top:8px; color:var(--muted); font-size:13px; }
+    .small-muted { color:var(--muted); font-size:13px; }
+    footer.hint { margin-top:12px; color:var(--muted); font-size:12px; }
+    .controls .note { background:#0b0b0b; padding:8px; border-radius:6px; color:var(--muted); font-size:13px; }
+    /* bibtex modal */
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:9999; }
+    .modal { background:#0e0e10; padding:16px; border-radius:10px; box-shadow:0 10px 40px rgba(0,0,0,0.8); width:min(720px,92%); color:var(--text); border:1px solid rgba(255,255,255,0.04); }
+    .modal textarea { width:100%; height:160px; background:#050505; color:#dcdcdc; border:1px solid rgba(255,255,255,0.05); padding:10px; border-radius:6px; resize:vertical; font-family:monospace; }
+    .modal .row { justify-content:flex-end; margin-top:8px; }
+    .message { margin-top:8px; color:var(--muted); font-size:13px; min-height:18px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="panel" aria-label="controls">
+      <h1>Peri's Graph Builder</h1>
+      <p class="small">Click <b>Add Node</b> to create nodes. Drag nodes to move them. Click two nodes in sequence to add/remove a link. Links are <strong>bidirectional</strong> (the adjacency matrix will be symmetric).</p>
+
+      <div class="controls">
+        <div class="row">
+          <button id="addNodeBtn" class="btn">➕ Add Node</button>
+          <button id="clearBtn" class="btn">🧹 Clear Graph</button>
+          <button id="bibtexBtn" class="btn">📚 Get BibTeX</button>
+        </div>
+
+        <div class="row">
+          <button id="modeToggle" class="btn btn-toggle active">🔗 Add Link</button>
+          <button id="removeNodeBtn" class="btn">🗑️ Remove Selected Node</button>
+          <button id="removeLinkBtn" class="btn">❌ Remove Link</button>
+        </div>
+
+        <div class="note">
+          <div><strong>How to use</strong></div>
+          <ul style="margin:6px 0 0 18px; padding:0; color:var(--muted);">
+            <li>Click <b>Add Node</b> to create nodes.</li>
+            <li>Drag nodes to move them.</li>
+            <li>Click a node to select it (yellow outline). Click another node to add a <em>bidirectional</em> link.</li>
+            <li>Toggle <b>Remove Link</b> then click two nodes to delete the link between them.</li>
+            <li>With a node selected, click <b>Remove Selected Node</b> or press <b>Delete</b> to remove it (graph reindexes).</li>
+          </ul>
+        </div>
+
+        <div class="status" id="statusLine">Mode: <span id="modeLabel">Add Link</span> — Selected: <span id="selLabel">none</span></div>
+        <div class="message" id="messageLine"></div>
+
+        <h3 style="margin-top:12px">Adjacency Matrix</h3>
+        <div id="matrixContainer" aria-live="polite">
+          <!-- matrix table injected here (only numbers, no row/col labels) -->
+        </div>
+
+        <footer class="hint">Tip: press <b>Delete</b> to remove the selected node. Links are undirected (stored as pairs).</footer>
+      </div>
+    </div>
+
+    <canvas id="graphCanvas" width="900" height="600" style="width:900px;height:600px"></canvas>
+  </div>
+
+  <!-- BibTeX modal (hidden by default) -->
+  <div id="bibModalBackdrop" style="display:none;" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal" role="document">
+      <h2 style="margin:0 0 8px 0">BibTeX citation</h2>
+      <p class="small">Copy this BibTeX entry to cite this page.</p>
+      <textarea id="bibText" readonly></textarea>
+      <div class="row" style="margin-top:8px;">
+        <button id="copyBibBtn" class="btn">📋 Copy</button>
+        <button id="closeBibBtn" class="btn">Close</button>
+      </div>
+      <div id="bibMessage" class="message"></div>
+    </div>
+  </div>
+
+<script>
+/* ---------- Graph data and UI handles ---------- */
+let nodes = [];
+let edges = new Set();  // normalized undirected pairs "a-b" where a < b
+
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+
+const addNodeBtn = document.getElementById('addNodeBtn');
+const clearBtn = document.getElementById('clearBtn');
+const modeToggle = document.getElementById('modeToggle');
+const removeNodeBtn = document.getElementById('removeNodeBtn');
+const removeLinkBtn = document.getElementById('removeLinkBtn');
+const bibtexBtn = document.getElementById('bibtexBtn');
+
+const modeLabel = document.getElementById('modeLabel');
+const selLabel = document.getElementById('selLabel');
+const matrixContainer = document.getElementById('matrixContainer');
+const messageLine = document.getElementById('messageLine');
+
+const bibModalBackdrop = document.getElementById('bibModalBackdrop');
+const bibText = document.getElementById('bibText');
+const copyBibBtn = document.getElementById('copyBibBtn');
+const closeBibBtn = document.getElementById('closeBibBtn');
+const bibMessage = document.getElementById('bibMessage');
+
+let selectedNode = null;
+let mode = 'add';            // 'add' (add link) or 'remove' (remove link)
+let removeLinkOneShot = false;
+
+const NODE_RADIUS = 16;
+const PADDING = 18;
+const DRAG_THRESHOLD = 6; // px
+
+/* DPI fix for crisp canvas */
+function fixCanvasDPR(){
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+  canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener('resize', () => { fixCanvasDPR(); drawGraph(); });
+
+/* Pointer helpers */
+function getPointerPos(evt){
+  const rect = canvas.getBoundingClientRect();
+  return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+}
+function getNodeAt(x,y){
+  return nodes.find(n => {
+    const dx = x - n.x, dy = y - n.y;
+    return dx*dx + dy*dy <= n.r*n.r;
+  }) || null;
+}
+
+/* Find free position (non-overlapping) */
+function findFreePosition(){
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  const attempts = 300;
+  for (let t=0;t<attempts;t++){
+    const x = PADDING + Math.random() * (W - PADDING*2);
+    const y = PADDING + Math.random() * (H - PADDING*2);
+    let ok = true;
+    for (const n of nodes){
+      const dx = x - n.x, dy = y - n.y;
+      const minDist = n.r + NODE_RADIUS + 6;
+      if (dx*dx + dy*dy < minDist*minDist){ ok=false; break; }
+    }
+    if (ok) return {x,y};
+  }
+  // fallback near center with offset
+  const x = Math.min(W - PADDING, PADDING + 30 + nodes.length*(NODE_RADIUS*2));
+  const y = Math.min(H - PADDING, H/2 + (nodes.length%6)*25);
+  return {x,y};
+}
+
+/* Graph operations */
+function normPair(a,b){
+  if (a===b) return null;
+  return a<b ? `${a}-${b}` : `${b}-${a}`;
+}
+function addEdge(a,b){
+  const key = normPair(a,b);
+  if (!key) return;
+  edges.add(key);
+  update();
+}
+function removeEdge(a,b){
+  const key = normPair(a,b);
+  if (!key) return;
+  edges.delete(key);
+  update();
+}
+function addNode(){
+  const id = nodes.length;
+  const pos = findFreePosition();
+  nodes.push({ id, x: pos.x, y: pos.y, r: NODE_RADIUS });
+  update();
+}
+function removeNodeByIndex(idx){
+  if (idx == null || idx < 0 || idx >= nodes.length) return;
+  nodes.splice(idx, 1);
+  nodes.forEach((n,i) => n.id = i);
+  const newEdges = new Set();
+  edges.forEach(pair => {
+    const [a,b] = pair.split('-').map(Number);
+    if (a === idx || b === idx) return;
+    const na = a > idx ? a-1 : a;
+    const nb = b > idx ? b-1 : b;
+    newEdges.add(normPair(na, nb));
+  });
+  edges = newEdges;
+  selectedNode = null;
+  showMessage(`Removed node ${idx}`, 2500);
+  update();
+}
+function clearGraph(){
+  nodes = [];
+  edges = new Set();
+  selectedNode = null;
+  showMessage('Graph cleared', 1800);
+  update();
+}
+
+/* Render adjacency matrix with the requested orientation:
+   printed cell at (row i, col j) will contain adjacency[j][i],
+   i.e. value 1 means there's a link FROM column j TO row i.
+   For undirected links both positions are 1.
+*/
+function renderMatrix(){
+  const n = nodes.length;
+  if (n === 0){
+    matrixContainer.innerHTML = '<div class="small-muted">No nodes yet</div>';
+    return;
+  }
+  const adj = Array.from({length:n}, () => Array(n).fill(0));
+  edges.forEach(pair => {
+    const [a,b] = pair.split('-').map(Number);
+    // store both directions (bidirectional)
+    adj[a][b] = 1;
+    adj[b][a] = 1;
+  });
+  // build table where displayed cell at row i col j shows adj[i][j]
+  let html = '<table id="matrix">';
+  for (let i=0;i<n;i++){
+    html += '<tr>';
+    for (let j=0;j<n;j++){
+      html += `<td>${adj[i][j]}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</table>';
+  matrixContainer.innerHTML = html;
+}
+
+/* Draw the graph */
+function drawGraph(){
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0,0,rect.width,rect.height);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0,0,rect.width,rect.height);
+
+  // draw edges (blue)
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(33,150,243,1)';
+  edges.forEach(pair => {
+    const [a,b] = pair.split('-').map(Number);
+    const A = nodes[a], B = nodes[b];
+    if (!A || !B) return;
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.lineTo(B.x, B.y);
+    ctx.stroke();
+  });
+
+  // draw nodes
+  for (const n of nodes){
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = '#c62828';
+    ctx.fill();
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = (selectedNode === n ? '#ffeb3b' : '#ffffff');
+    ctx.stroke();
+
+    ctx.font = '13px monospace';
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(String(n.id), n.x, n.y);
+  }
+}
+
+/* UI update and helper */
+function update(){
+  renderMatrix();
+  drawGraph();
+  modeLabel.textContent = mode === 'add' ? 'Add Link' : 'Remove Link';
+  selLabel.textContent = selectedNode ? selectedNode.id : 'none';
+  if (mode === 'add') modeToggle.classList.add('active'); else modeToggle.classList.remove('active');
+}
+
+/* Show temporary message (non-blocking, no alerts) */
+let _msgTimer = null;
+function showMessage(msg, timeout = 2000){
+  messageLine.textContent = msg;
+  clearTimeout(_msgTimer);
+  if (timeout > 0) _msgTimer = setTimeout(()=>{ messageLine.textContent = ''; }, timeout);
+}
+
+/* ---------- Robust pointer handling (click vs drag) ---------- */
+let pointerDownInfo = null;
+
+canvas.addEventListener('pointerdown', ev => {
+  const p = getPointerPos(ev);
+  const node = getNodeAt(p.x, p.y);
+  pointerDownInfo = { startX: p.x, startY: p.y, node, pointerId: ev.pointerId, moved: false };
+  if (node) {
+    try { canvas.setPointerCapture(ev.pointerId); } catch(e){}
+  }
+});
+
+canvas.addEventListener('pointermove', ev => {
+  if (!pointerDownInfo) return;
+  const p = getPointerPos(ev);
+  const dx = p.x - pointerDownInfo.startX;
+  const dy = p.y - pointerDownInfo.startY;
+  const dist2 = dx*dx + dy*dy;
+  if (!pointerDownInfo.moved && dist2 > DRAG_THRESHOLD*DRAG_THRESHOLD) pointerDownInfo.moved = true;
+  // Only move node if drag threshold exceeded
+  if (pointerDownInfo.moved && pointerDownInfo.node) {
+    pointerDownInfo.node.x = p.x;
+    pointerDownInfo.node.y = p.y;
+    update();
+  }
+});
+
+canvas.addEventListener('pointerup', ev => {
+  if (!pointerDownInfo) return;
+  const p = getPointerPos(ev);
+  const wasMoved = pointerDownInfo.moved;
+  const downNode = pointerDownInfo.node;
+  try { canvas.releasePointerCapture(ev.pointerId); } catch(e){}
+  if (wasMoved) {
+    // Only move node, do not select or link
+    pointerDownInfo = null;
+    update();
+    return;
+  }
+  // Only process click if not moved
+  const clickedNode = getNodeAt(p.x, p.y);
+  if (clickedNode) {
+    if (!selectedNode) {
+      selectedNode = clickedNode;
+      update();
+      pointerDownInfo = null;
+      return;
+    }
+    if (selectedNode === clickedNode) {
+      selectedNode = null;
+      update();
+      pointerDownInfo = null;
+      return;
+    }
+    // two different nodes: either add or remove link depending on mode
+    if (mode === 'add') {
+      addEdge(selectedNode.id, clickedNode.id);
+      selectedNode = null;
+      update();
+    } else {
+      removeEdge(selectedNode.id, clickedNode.id);
+      selectedNode = null;
+      if (removeLinkOneShot) {
+        removeLinkOneShot = false;
+        mode = 'add';
+      }
+      update();
+    }
+  } else {
+    // clicked empty space -> deselect
+    selectedNode = null;
+    update();
+  }
+  pointerDownInfo = null;
+});
+
+/* ---------- Buttons & keyboard (no blocking popups) ---------- */
+addNodeBtn.addEventListener('click', () => {
+  addNode();
+  showMessage('Node added', 1200);
+});
+clearBtn.addEventListener('click', () => {
+  clearGraph();
+});
+modeToggle.addEventListener('click', () => {
+  mode = (mode === 'add') ? 'remove' : 'add';
+  removeLinkOneShot = false;
+  update();
+});
+removeNodeBtn.addEventListener('click', () => {
+  if (!selectedNode){
+    showMessage('No node selected', 1600);
+    return;
+  }
+  removeNodeByIndex(selectedNode.id);
+});
+removeLinkBtn.addEventListener('click', () => {
+  mode = 'remove';
+  removeLinkOneShot = true;
+  showMessage('Remove link: click two nodes', 2000);
+  update();
+});
+document.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Delete' || ev.key === 'Backspace'){
+    if (selectedNode){
+      removeNodeByIndex(selectedNode.id);
+    } else {
+      showMessage('No node selected to delete', 1200);
+    }
+  } else if (ev.key === 'Escape'){
+    selectedNode = null;
+    update();
+  }
+});
+
+/* ---------- BibTeX modal ---------- */
+bibtexBtn.addEventListener('click', () => {
+  const url = window.location.href;
+  const now = new Date();
+  const date = now.toISOString().split('T')[0];
+  const key = `graphbuilder${date.replace(/-/g,'')}`;
+  const title = document.title.replace(/([{}])/g,'\\$1');
+  const year = now.getFullYear();
+  const bib = `@misc{${key},
+  title = {${title}},
+  author = {Gianluca Peri},
+  howpublished = {\\\\url{${url}}},
+  year = {${year}},
+  note = {Accessed: ${date}}
+}`;
+  bibText.value = bib;
+  bibMessage.textContent = '';
+  bibModalBackdrop.style.display = 'flex';
+});
+copyBibBtn.addEventListener('click', async () => {
+  const txt = bibText.value;
+  try {
+    await navigator.clipboard.writeText(txt);
+    bibMessage.textContent = 'Copied to clipboard';
+  } catch (err) {
+    // fallback
+    bibText.select();
+    try { document.execCommand('copy'); bibMessage.textContent = 'Copied (fallback)'; }
+    catch(e){ bibMessage.textContent = 'Copy failed'; }
+  }
+});
+closeBibBtn.addEventListener('click', () => {
+  bibModalBackdrop.style.display = 'none';
+});
+
+/* Clicking background closes modal */
+bibModalBackdrop.addEventListener('click', (e) => {
+  if (e.target === bibModalBackdrop) bibModalBackdrop.style.display = 'none';
+});
+
+/* ---------- initialization ---------- */
+fixCanvasDPR();
+update();
+window.addEventListener('load', () => { fixCanvasDPR(); update(); });
+
+/* expose for debugging */
+window._graph = { nodes, edges, addNode, addEdge, removeEdge, removeNodeByIndex, clearGraph, update };
+
+</script>
+</body>
+</html>
+
