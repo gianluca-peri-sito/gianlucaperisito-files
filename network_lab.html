@@ -28,7 +28,7 @@
     #matrixContainer { margin-top:8px; overflow:auto; max-height:300px; border-radius:8px; padding:6px; background:#050505; }
     table#matrix { border-collapse:collapse; margin:0; }
     #matrix td { border:1px solid rgba(255,255,255,0.04); padding:6px 8px; text-align:center; min-width:28px; font-family:monospace; color:var(--matrix-num); background: rgba(255,255,255,0.01); }
-    canvas#graphCanvas { background:var(--bg); border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.7); display:block; cursor:crosshair; border:1px solid rgba(255,255,255,0.03); touch-action: manipulation; }
+    canvas#graphCanvas { background:var(--bg); border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.7); display:block; cursor:crosshair; border:1px solid rgba(255,255,255,0.03); touch-action: none; }
     .status { margin-top:8px; color:var(--muted); font-size:13px; }
     .small-muted { color:var(--muted); font-size:13px; }
     footer.hint { margin-top:12px; color:var(--muted); font-size:12px; }
@@ -321,6 +321,7 @@ canvas.addEventListener('pointerdown', ev => {
   const node = getNodeAt(p.x, p.y);
   pointerDownInfo = { startX: p.x, startY: p.y, node, pointerId: ev.pointerId, moved: false };
   if (node) {
+    ev.preventDefault();
     try { canvas.setPointerCapture(ev.pointerId); } catch(e){}
   }
 });
@@ -347,7 +348,7 @@ canvas.addEventListener('pointerup', ev => {
   const wasMoved = pointerDownInfo.moved;
   const downNode = pointerDownInfo.node;
   try { canvas.releasePointerCapture(ev.pointerId); } catch(e){}
-  if (wasMoved) {
+  if (wasMoved && downNode) {
     ev.preventDefault();
     // Only move node, do not select or link
     pointerDownInfo = null;
