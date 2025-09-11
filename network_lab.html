@@ -28,7 +28,7 @@
     #matrixContainer { margin-top:8px; overflow:auto; max-height:300px; border-radius:8px; padding:6px; background:#050505; }
     table#matrix { border-collapse:collapse; margin:0; }
     #matrix td { border:1px solid rgba(255,255,255,0.04); padding:6px 8px; text-align:center; min-width:28px; font-family:monospace; color:var(--matrix-num); background: rgba(255,255,255,0.01); }
-    canvas#graphCanvas { background:var(--bg); border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.7); display:block; cursor:crosshair; border:1px solid rgba(255,255,255,0.03); }
+    canvas#graphCanvas { background:var(--bg); border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.7); display:block; cursor:crosshair; border:1px solid rgba(255,255,255,0.03); touch-action: manipulation; }
     .status { margin-top:8px; color:var(--muted); font-size:13px; }
     .small-muted { color:var(--muted); font-size:13px; }
     footer.hint { margin-top:12px; color:var(--muted); font-size:12px; }
@@ -334,6 +334,7 @@ canvas.addEventListener('pointermove', ev => {
   if (!pointerDownInfo.moved && dist2 > DRAG_THRESHOLD*DRAG_THRESHOLD) pointerDownInfo.moved = true;
   // Only move node if drag threshold exceeded
   if (pointerDownInfo.moved && pointerDownInfo.node) {
+    ev.preventDefault();
     pointerDownInfo.node.x = p.x;
     pointerDownInfo.node.y = p.y;
     update();
@@ -347,6 +348,7 @@ canvas.addEventListener('pointerup', ev => {
   const downNode = pointerDownInfo.node;
   try { canvas.releasePointerCapture(ev.pointerId); } catch(e){}
   if (wasMoved) {
+    ev.preventDefault();
     // Only move node, do not select or link
     pointerDownInfo = null;
     update();
