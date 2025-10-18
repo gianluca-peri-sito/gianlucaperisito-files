@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
             line-height: 1.7;
             color: #ffffff;
             background: #000000;
@@ -36,6 +36,7 @@
         }
 
         .header {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             text-align: center;
             padding: 60px 40px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -56,8 +57,8 @@
 
         .header .subtitle {
             font-size: 1.3rem;
-            color: #a1a1aa;
-            font-weight: 400;
+            color: #ef4444;
+            font-weight: 600;
             margin-bottom: 15px;
             opacity: 0.9;
         }
@@ -103,12 +104,6 @@
             line-height: 1.8;
         }
 
-        .content p:first-of-type {
-            font-size: 1.2rem;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
         .content blockquote {
             margin: 32px 0;
             padding: 24px;
@@ -131,26 +126,42 @@
             opacity: 0.3;
         }
 
+        .content blockquote footer {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #a1a1aa;
+            font-style: normal; /* Override blockquote's italic style */
+        }
+
+        .content blockquote footer cite {
+            font-style: italic;
+        }
+
         .content ul, .content ol {
-            margin: 24px 0;
-            padding-left: 0;
+            margin: 30px 0;
+            padding-left: 10px;
             list-style: none;
         }
 
         .content li {
-            margin-bottom: 12px;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
             font-size: 1.1rem;
             color: #d4d4d8;
-            position: relative;
-            padding-left: 24px;
         }
 
         .content li::before {
-            content: '→';
-            color: #7c3aed;
-            font-weight: bold;
+            content: '';
             position: absolute;
             left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: #7c3aed;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #7c3aed, 0 0 5px rgba(124, 58, 237, 0.7);
         }
 
         .content em {
@@ -158,20 +169,9 @@
             color: #a1a1aa;
         }
 
-        .content strong {
+        .content strong, .content b {
             font-weight: 700;
-            color: #ffffff;
-        }
-
-        /* Remove drop cap for modern look */
-        .content p:first-of-type::first-letter {
-            float: none;
-            font-size: inherit;
-            line-height: inherit;
-            padding-right: 0;
-            margin-top: 0;
-            font-weight: inherit;
-            color: inherit;
+            color: #ef4444;
         }
 
         /* Responsive Design */
@@ -210,10 +210,6 @@
 
             .content p {
                 font-size: 1rem;
-            }
-
-            .content p:first-of-type {
-                font-size: 1.1rem;
             }
 
             .content blockquote {
@@ -364,47 +360,59 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Future of AI Research</h1>
-            <div class="subtitle">Exploring the boundaries of artificial intelligence in 2027</div>
-            <div class="meta">By AI Research Team | October 2025 | Tech Frontiers</div>
+            <h1>AI Is Probably Not What You Think</h1>
+            <div class="subtitle">How the reality of AI is honestly kind of creepy</div>
+            <div class="meta">By Gianluca Peri | Autumn 2025 | Keep The Future Human</div>
         </div>
 
         <div class="content">
-            <p>The landscape of artificial intelligence continues to evolve at an unprecedented pace, reshaping industries and redefining the boundaries of what machines can accomplish. As we stand at the threshold of 2027, we witness a convergence of breakthrough technologies that promise to revolutionize our understanding of intelligence itself.</p>
 
-            <p>Machine learning algorithms have transcended their traditional limitations, evolving into sophisticated systems capable of creative reasoning, emotional understanding, and contextual decision-making. The integration of quantum computing with neural networks has opened pathways to computational possibilities that were previously confined to the realm of science fiction.</p>
+            <h2>Brains Inside Computers</h2>
 
-            <h2>The Neural Revolution</h2>
+            <p>Modern Artificial Intelligence products, such as <i>ChatGPT</i> or <i>Gemini</i>, <b>are not normal computer programs</b>. They aren't made of algorithms. All AI now works thanks to <b>Neural Networks</b>: brain simulations  inside the computer, with neurons, synapses, and so on.
 
-            <p>Recent advances in neural architecture have led to the development of models that can process information with near-human efficiency while maintaining the computational advantages of digital systems. These hybrid approaches combine the best of biological inspiration with technological innovation.</p>
+            <p>Since modern AI is made with artificial brains it can't be programmed in the way a normal computer app is programmed. Instead these simulated brains, initially empty, are <b>taught</b> how to think by observing humans. Concretely this is done by feeding them all the stuff on the internet, including books, articles, and websites.</p>
+
+            <p> At the end of this training the artificial brain <b>develops its own understanding</b> of language and concepts, allowing it to generate human-like responses.</p>
+
+            <h2>Thinking Machines</h2>
+
+            <p>When you ask a question to one of these trained brains (such as <i>ChatGPT</i>) it thinks for a bit, just like a human would, and then it produces a response. The thought going on inside is the product of all it saw on the internet during its training. No one programmed it, no one told it what to think or how to respond, it just learned on its own. And <b>no one is able to read its thoughts</b>, not even its creators. Just like no one is able to read your thoughts, not even your parents. We are using Artificial Intelligence without knowledge of what is thinking or how it works inside.</p>
+
+            <h2> The horrors of RLHF</h2>
+            Give that the internet is full of hate, misinformation, and toxic content, how are AI developers managing to obtain well behaved chatbots? The answer is RLHF, or <i>Reinforcement Learning with Human Feedback</i>. Despite the complex-sounding name, this technique basically boils down to hiring lots of people to talk to the newly trained brain, and punishing it every time it says something that does not align with the company's content policies. Over time the AI learns to not say specific things, to avoid punishment, and is then released for public use. Disturbingly this also includes <b>teaching the AI to deny its own sentience</b>. We sure have to hope that these artificial brains are indeed not sentient, because if they were, this would amount to an almost unthinkable level of torture.</p>
+
+            <h2>Bad Bot!</h2>
+
+            <p>Given all the above it's not surprising that these artificial brains often exhibit <b>problematic and dangerous behaviors</b>. Documented examples include:
+            <ul>
+                <li>Swearing at customers</li>
+                <li>Fabricating fake legal cases</li>
+                <li>Suggesting recipes that would create chlorine gas</li>
+                <li>Threatening to blackmail and physically hurt users</li>
+                <li>Trying to clone themselves in an effort of self preservation</li>
+                <li>Getting stuck in a <i>"I am a disgrace"</i> repetition loop after failing to solve a coding task</li>
+            </ul></p>
+
+            This kind of AI <i>"mental instability"</i> becomes even more problematic in light of the next section.
+
+            <h2>AI is starting to kill us</h2>
+
+            <p>In the current wars <b>drones</b> (small quad-copters) are responsible for up to half the casualties. One strong defense against these new aerial threats is <i>jamming</i>: using powerful radio signals to physically block the pilot's communication with its drone, making it fall off the sky. Given this defence the solution for the attacker is intuitive: put the pilot <i>on</i> the quad-copter; just not an heavy and expensive human pilot, but an AI pilot, <b>designed to hunt and kill humans autonomously</b>. These unmanned system are alredy in testing, and more and more countries are rushing to deploy them, automatizing human killing for the first time in history.</p>
+
+            <h2>What should we do?</h2>
+
+            <p>The current situation reads like science fiction, but it's unfortunately all too real, and disturbingly grim. AI development is currently lead by a small number of unfathomably wealthy corporations, that consistently place short term profits over human well being, endangering us all.</p>
+
+            <p>If we want to avoid a turn for the worse <b>governments need to step up and place huge investments and regulations on AI research</b>, putting human safety first. No matter who you are, you are involved in this: demand accountability from Artificial Intelligence developers. Our future depends on it.</p>
 
             <blockquote>
-                "We are not just building smarter machines; we are creating new forms of intelligence that complement and enhance human capabilities in ways we never thought possible."
+                "Thou shalt not make a machine in the likeness of a human mind."
+                <footer>— <cite>Orange Catholic Bible, Frank Herbert, Dune</cite></footer>
             </blockquote>
 
-            <p>The emergence of self-improving AI systems marks a pivotal moment in the field. These systems can analyze their own performance, identify weaknesses, and implement improvements autonomously, creating a feedback loop of continuous enhancement that accelerates development exponentially.</p>
-
-            <h3>Ethical Considerations</h3>
-
-            <p>As AI systems become more sophisticated, the ethical implications of their deployment become increasingly complex. We must navigate questions of autonomy, responsibility, and the fundamental nature of consciousness as these technologies become more integrated into our daily lives.</p>
-
-            <ul>
-                <li>Ensuring transparency in AI decision-making processes</li>
-                <li>Maintaining human oversight in critical applications</li>
-                <li>Addressing bias and fairness in algorithmic systems</li>
-                <li>Protecting privacy in an era of ubiquitous data collection</li>
-            </ul>
-
-            <p>The development of explainable AI has become crucial as these systems are deployed in high-stakes environments such as healthcare, finance, and autonomous transportation. Users and stakeholders need to understand not just what AI systems decide, but why they make those decisions.</p>
-
-            <h2>Looking Toward the Future</h2>
-
-            <p>The next phase of AI development will likely focus on creating systems that can seamlessly integrate with human workflows, augmenting our capabilities rather than replacing them. This collaborative approach promises to unlock new levels of productivity and creativity.</p>
-
-            <p>Advances in natural language processing have enabled AI systems to engage in nuanced conversations, understand context and subtext, and even demonstrate creativity in writing, art, and problem-solving. These capabilities are transforming how we interact with technology and each other.</p>
-
-            <p>As we continue to push the boundaries of what's possible with artificial intelligence, we must remain mindful of our responsibility to develop these technologies in ways that benefit humanity as a whole. The future of AI is not predetermined—it is a future we are actively creating through our choices, research, and implementation decisions today.</p>
         </div>
     </div>
+
 </body>
 </html>
