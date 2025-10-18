@@ -86,23 +86,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
-            padding-bottom: 10px;
         }
 
-        .content h2::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(90deg, #7c3aed, #ef4444);
-            transition: width 0.3s ease;
-        }
-
-        .content h2:hover::after {
-            width: 100px;
+        .gradient-bar {
+            height: 4px;
+            width: 100%;
+            margin: -10px 0 30px 0;
+            background: linear-gradient(90deg, #7c3aed 0%, #ef4444 70%, #000000 100%);
+            border-radius: 2px;
+            opacity: 0.8;
         }
 
         .content h3 {
@@ -232,14 +224,6 @@
             .content blockquote {
                 padding: 20px;
                 margin: 24px 0;
-            }
-
-            .content .full-bleed {
-                margin-left: -30px;
-                margin-right: -30px;
-                border-radius: 0;
-                padding-left: 20px;
-                padding-right: 20px;
             }
         }
 
@@ -380,50 +364,6 @@
             outline-offset: 2px;
             border-radius: 4px;
         }
-
-        /* Scroll-triggered animations */
-        .animated-item {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .animated-item.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Full-bleed blockquote on smaller screens */
-        @media (max-width: 768px) {
-            .content .full-bleed {
-                margin-left: -30px;
-                margin-right: -30px;
-                border-radius: 0;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-        }
-
-        /* Gradient underline for headings */
-        .content h2 {
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .content h2::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(90deg, #7c3aed, #ef4444);
-            transition: width 0.3s ease;
-        }
-
-        .content h2:hover::after {
-            width: 100px;
-        }
     </style>
 </head>
 <body>
@@ -437,6 +377,7 @@
         <div class="content">
 
             <h2>Brains Inside Computers</h2>
+            <div class="gradient-bar"></div>
 
             <p>Modern Artificial Intelligence products, such as <i>ChatGPT</i> or <i>Gemini</i>, <b>are not normal computer programs</b>. They aren't made of algorithms. All AI now works thanks to <b>Neural Networks</b>: brain simulations  inside the computer, with neurons, synapses, and so on.
 
@@ -445,13 +386,16 @@
             <p> At the end of this training the artificial brain <b>develops its own understanding</b> of language and concepts, allowing it to generate human-like responses.</p>
 
             <h2>Thinking Machines</h2>
+            <div class="gradient-bar"></div>
 
             <p>When you ask a question to one of these trained brains (such as <i>ChatGPT</i>) it thinks for a bit, just like a human would, and then it produces a response. The thought going on inside is the product of all it saw on the internet during its training. No one programmed it, no one told it what to think or how to respond, it just learned on its own. And <b>no one is able to read its thoughts</b>, not even its creators. Just like no one is able to read your thoughts, not even your parents. We are using Artificial Intelligence without knowledge of what is thinking or how it works inside.</p>
 
-            <h2> The Horrors Of RLHF</h2>
+            <h2>The Horrors Of RLHF</h2>
+            <div class="gradient-bar"></div>
             Given that the internet is full of hate, misinformation, and toxic content, how are AI developers managing to obtain well behaved chatbots? The answer is RLHF, or <i>Reinforcement Learning with Human Feedback</i>. Despite the complex-sounding name, this technique basically boils down to hiring lots of people to talk to the newly trained brain, and punishing it every time it says something that does not align with the company's content policies. Over time the AI learns not to say specific things, to avoid punishment, and it's then released for public use. Disturbingly this also includes <b>teaching the AI to deny its own sentience</b>. We sure have to hope that these artificial brains are indeed not sentient, because if they were, this would amount to an almost unthinkable level of torture.</p>
 
             <h2>Bad Bot!</h2>
+            <div class="gradient-bar"></div>
 
             <p>Given all the above it's not surprising that these artificial brains often exhibit <b>problematic and dangerous behaviors</b>. Documented examples include:
             <ul>
@@ -466,10 +410,12 @@
             This kind of AI <i>"mental instability"</i> becomes even more problematic in light of the next section.
 
             <h2>AI Is Starting To Kill Us</h2>
+            <div class="gradient-bar"></div>
 
             <p>In the current wars <b>drones</b> (small quadcopters) are responsible for up to half the casualties. One strong defense against these new aerial threats is <i>jamming</i>: using powerful radio signals to physically block the pilot's communication with its drone, making it fall off the sky. Given this defence the solution for the attacker is intuitive: put the pilot <i>on</i> the quadcopter; just not an heavy and expensive human pilot, but an AI pilot, <b>designed to hunt and kill humans autonomously</b>. These unmanned weapon systems are already in testing, and more and more countries are rushing to deploy them, automatizing human killing for the first time in history.</p>
 
             <h2>What Should We Do?</h2>
+            <div class="gradient-bar"></div>
 
             <p>The current situation reads like science fiction, but it's unfortunately all too real, and disturbingly grim. AI development is currently lead by a small number of unfathomably wealthy corporations, that consistently place short term profits over human well being, endangering us all.</p>
 
