@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1768225520.52853 "/home/noumeno/Documents/gianlucaperisito-files/Curriculum_ENG.tex" "Curriculum_ENG.pdf" "Curriculum_ENG" 1768225521.20137 0
-  "/home/noumeno/Documents/gianlucaperisito-files/Curriculum_ENG.tex" 1768225520.40301 3691 ac1d4a5856f6a1285412929a200270a1 ""
+["pdflatex"] 1770320398.71493 "/home/noumeno/Documents/gianlucaperisito-files/Curriculum_ENG.tex" "Curriculum_ENG.pdf" "Curriculum_ENG" 1770320399.41795 0
+  "/home/noumeno/Documents/gianlucaperisito-files/Curriculum_ENG.tex" 1770320380.08411 3691 4c6b95e50cbf51678db6adf01da56b38 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5brands0.enc" 1622837620 2920 d63721872b8c77041b88e51b8f7c291d ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc" 1622837620 3042 0e2b14b9be7d01075a4c4591d5d1781b ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc" 1202520719 2327 9d6df24f9c4f7368395224341a95523a ""
@@ -195,9 +195,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1764115200 40900 887e0dc8cac988a9e9c574af364cf837 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1765398208.58809 4602002 62dba5fc29055c16380d7393a2adb07a ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1765397898 7753936 1f7d28d0b93cb56e91c3e4a5aefe02f5 ""
-  "Curriculum_ENG.aux" 1768225521.096 1182 19431e9f3d96917dcf58623a16e13e42 "pdflatex"
-  "Curriculum_ENG.out" 1768225521.097 702 e2a28baf1bf700d0f3ecad0e63d3a7ad "pdflatex"
-  "Curriculum_ENG.tex" 1768225520.40301 3691 ac1d4a5856f6a1285412929a200270a1 ""
+  "Curriculum_ENG.aux" 1770320399.30337 1182 19431e9f3d96917dcf58623a16e13e42 "pdflatex"
+  "Curriculum_ENG.out" 1770320399.30439 702 e2a28baf1bf700d0f3ecad0e63d3a7ad "pdflatex"
+  "Curriculum_ENG.tex" 1770320380.08411 3691 4c6b95e50cbf51678db6adf01da56b38 ""
   (generated)
   "Curriculum_ENG.aux"
   "Curriculum_ENG.log"
