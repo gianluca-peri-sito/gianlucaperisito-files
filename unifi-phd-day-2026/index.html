@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhD Day 2026</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.46/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/theme/white.css">
+  <style>
+    .reveal, .reveal .slide-background { background-color: #f0f0f0; }
+
+    /* Section fills the full slide height as a flex column:
+       header pinned top, footer pinned bottom, middle stretches between them */
+    .reveal .slides section {
+      display: flex !important;
+      flex-direction: column !important;
+      height: 700px !important;
+      padding-left: 40px !important;
+      padding-right: 40px !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* ── Header ── */
+    .slide-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: calc(100% + 80px);
+      margin-left: -40px;
+      padding: 10px 40px 12px;
+      border-bottom: 2px solid #bbb;
+      margin-bottom: 0;
+      box-sizing: border-box;
+    }
+    .slide-header img { height: 90px; flex-shrink: 0; }
+    .slide-header .header-center { text-align: center; }
+    .header-title {
+      font-size: 0.58em;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .header-sub {
+      font-size: 0.34em;
+      color: #444;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+    .header-sub .sep { color: #888; }
+
+    /* ── Middle: SVG + equation, anchored to the top of the available space ── */
+    .slide-middle {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 18px;
+      overflow: hidden;
+    }
+
+    /* ── Footer ── */
+    .slide-footer {
+      flex-shrink: 0;
+      width: calc(100% + 80px);
+      margin-left: -40px;
+      padding: 18px 40px 12px;
+      box-sizing: border-box;
+    }
+    .footer-rule {
+      border: none;
+      border-top: 1.5px solid #ccc;
+      margin: 0 0 8px 0;
+    }
+    .authors-row {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+    .author { text-align: center; }
+    .author-name  { font-size: 0.33em; font-weight: 600; color: #333; }
+    .author-affil { font-size: 0.27em; color: #666; font-style: italic; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <div class="slide-header">
+          <img src="unifi_logo.png">
+          <div class="header-center">
+            <div class="header-title" id="conf-title"></div>
+            <div class="header-sub">
+              <span id="conf-name"></span>
+              <span class="sep"> &ensp;·&ensp; </span>
+              <span id="conf-event"></span>
+            </div>
+          </div>
+          <img src="unamur_logo.png" style="filter: invert(1);">
+        </div>
+
+        <div class="slide-middle">
+          <svg id="network" width="720" height="320" viewBox="0 0 720 320"></svg>
+          <div id="equation" style="margin-top: 14px; text-align: center; font-size: 0.7em;"></div>
+        </div>
+
+        <div class="slide-footer">
+          <hr class="footer-rule">
+          <div class="authors-row conf-authors"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="slide-header">
+          <img src="unifi_logo.png">
+          <div class="header-center">
+            <div class="header-title" id="conf-title2"></div>
+            <div class="header-sub">
+              <span id="conf-name2"></span>
+              <span class="sep"> &ensp;·&ensp; </span>
+              <span id="conf-event2"></span>
+            </div>
+          </div>
+          <img src="unamur_logo.png" style="filter: invert(1);">
+        </div>
+
+        <div class="slide-middle">
+          <svg id="network2" width="720" height="320" viewBox="0 0 720 320"></svg>
+          <div id="equation2" style="margin-top: 14px; text-align: center; font-size: 0.7em;">
+            <div id="equation2-hk"></div>
+            <div id="equation2-yl" style="margin-top: 14px;"></div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <hr class="footer-rule">
+          <div class="authors-row conf-authors"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.46/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/reveal.js"></script>
+  <script src="network.js"></script>
+  <script src="triadicnetwork.js"></script>
+  <script>
+    document.getElementById('conf-title').textContent  = CONF.title;
+    document.getElementById('conf-name').textContent   = CONF.name;
+    document.getElementById('conf-event').textContent  = CONF.event;
+    document.getElementById('conf-title2').textContent = CONF.title;
+    document.getElementById('conf-name2').textContent  = CONF.name;
+    document.getElementById('conf-event2').textContent = CONF.event;
+
+    const authorHTML = CONF.authors.map(a =>
+      `<div class="author">
+         <div class="author-name">${a.name}</div>
+         <div class="author-affil">${a.affiliation}</div>
+       </div>`
+    ).join('');
+    document.querySelectorAll('.conf-authors').forEach(el => {
+      el.innerHTML = authorHTML;
+    });
+
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      width: 960,
+      height: 700,
+    });
+  </script>
+</body>
+</html>
