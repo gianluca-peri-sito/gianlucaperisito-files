@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.7.5)  6 JUL 2026 15:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.10.14)  16 OCT 2026 12:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -600,12 +600,12 @@ pdf> </usr/share/texlive/texmf-dist/tex/latex/europasscv/icons/github_europass_
 icon.pdf>]
 File: europasslogo2013.pdf Graphic file (type pdf)
 <use europasslogo2013.pdf>
-Package pdftex.def Info: europasslogo2013.pdf  used on input line 118.
+Package pdftex.def Info: europasslogo2013.pdf  used on input line 119.
 (pdftex.def)             Requested size: 76.60127pt x 21.40724pt.
  [2{/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
 File: europasslogo2013.pdf Graphic file (type pdf)
 <use europasslogo2013.pdf>
-Package pdftex.def Info: europasslogo2013.pdf  used on input line 128.
+Package pdftex.def Info: europasslogo2013.pdf  used on input line 137.
 (pdftex.def)             Requested size: 76.60127pt x 21.40724pt.
  [3]
 
@@ -620,7 +620,7 @@ Package rerunfilecheck Info: File `Curriculum_Europass.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  13147 strings out of 467363
- 210876 string characters out of 5419002
+ 210876 string characters out of 5419000
  686254 words of memory out of 6000000
  42022 multiletter control sequences out of 15000+600000
  650241 words of font info for 64 fonts, out of 8000000 for 9000
@@ -629,10 +629,10 @@ Here is how much of TeX's memory you used:
 </usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Curriculum_Europass.pdf (3 pages, 67615 bytes).
+Output written on Curriculum_Europass.pdf (3 pages, 68313 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 64 compressed objects within 1 object stream
+ 85 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
  4 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
