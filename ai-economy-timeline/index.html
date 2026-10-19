@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AI in Economy &amp; Work</title>
+  <meta name="description" content="A timeline of AI in the economy and work, 2017 to 2026: from the Transformer paper to automated research. By Gianluca Peri.">
+  <meta name="author" content="Gianluca Peri">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI in Economy &amp; Work">
+  <meta property="og:description" content="A timeline of AI in the economy and work, 2017 to 2026: from the Transformer paper to automated research.">
+  <link rel="stylesheet" href="style.css">
+  <script>try { const t = localStorage.getItem("aiTimeline.theme"); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+</head>
+<body>
+  <button id="theme" class="theme" type="button" aria-label="Toggle dark mode"><i></i><span>Light</span></button>
+
+  <div id="search" class="search" role="search">
+    <input id="q" type="search" placeholder="Search the timeline" aria-label="Search the timeline" autocomplete="off" spellcheck="false"
+           role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+    <kbd aria-hidden="true">/</kbd>
+    <ul id="results" role="listbox" hidden></ul>
+  </div>
+
+  <header class="intro">
+    <p class="eyebrow">2017 → 2026</p>
+    <h1>AI in Economy &amp; Work</h1>
+    <p class="lede">From the <button type="button" class="tx-open" data-tx title="How a Transformer works">Transformer</button> paper to automated research. Scroll through the timeline; the strip at the bottom shows the whole of it at a glance.</p>
+    <p class="key"><span class="work-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.4.8 2.8 9.3h4L5.9 15.2l7.3-9H8.9z"/></svg>Puts AI to work</span> marks the results that let AI be applied in the economy as a working agent.</p>
+    <p class="byline">By <span class="author">Gianluca Peri</span> <button type="button" class="about-open" data-about>About the author</button></p>
+  </header>
+
+  <main id="timeline"></main>
+
+  <footer class="footer">
+    <p><span class="author">Gianluca Peri</span> · AI in Economy &amp; Work · 2026 · <button type="button" class="about-open" data-about>About the author</button></p>
+  </footer>
+
+  <section id="dock" aria-label="The whole timeline at a glance">
+   <div id="pane-grip" class="pane-grip" role="separator" aria-orientation="horizontal" tabindex="0"
+        aria-label="Resize the timeline strip" title="Drag to resize · double-click to reset"><i></i></div>
+   <button id="pane-toggle" class="pane-toggle" type="button" aria-expanded="true" aria-controls="mini">
+     <span class="pt-text">Hide timeline</span><i aria-hidden="true"></i>
+   </button>
+   <nav id="mini" class="mini" aria-label="The whole timeline at a glance"><div class="mini-track"></div><div id="mini-tip" class="mini-tip" hidden></div></nav>
+  </section>
+
+  <dialog id="about" class="about" aria-labelledby="about-name">
+    <button type="button" class="about-close" id="about-close" aria-label="Close">Close ✕</button>
+    <div id="about-body"></div>
+  </dialog>
+
+  <dialog id="tx" class="about tx" aria-labelledby="tx-title">
+    <button type="button" class="about-close" id="tx-close" aria-label="Close">Close ✕</button>
+    <div id="tx-body"></div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+  <script src="transformer.js"></script>
+</body>
+</html>
